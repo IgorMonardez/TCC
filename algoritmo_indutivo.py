@@ -108,7 +108,7 @@ def algoritmo_indutivo(grafo):
         return solucao
 
 
-#TODO: Alguns problemas, como a ordem da solução e de como fazer a união das soluções.
+#TODO: Algumas dúvidas, como a ordem da solução e de como fazer a união das soluções.
 if __name__ == '__main__':
     grafo = {
         '1': [['2', '3'], True],

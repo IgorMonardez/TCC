@@ -158,7 +158,7 @@ if __name__ == '__main__':
         '5': [['3'], True],
     }
 
-    n = 100
+    n = 100000
     contagem = 0
     for i in range(n):
         result = algoritmo_indutivo(grafo_split)
@@ -170,7 +170,7 @@ if __name__ == '__main__':
 
     print("split: ",contagem / n)
 
-    n = 100
+    n = 100000
     contagem = 0
     for i in range(n):
         result = algoritmo_indutivo(grafo_bipartido)
@@ -182,7 +182,7 @@ if __name__ == '__main__':
 
     print("bipartido: ",contagem / n)
 
-    n = 100
+    n = 100000
     contagem = 0
     for i in range(n):
         result = algoritmo_indutivo(grafo_tree)

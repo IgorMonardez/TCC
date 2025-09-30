@@ -1,0 +1,45 @@
+n:  4
+v:  2
+n:  3
+v:  3
+n:  2
+v:  4
+n:  1
+v:  1
+par
+w:  1
+n:  1
+v:  4
+aplicado: {'1', '4'}
+par
+w:  1
+n:  3
+v:  4
+n:  2
+v:  2
+n:  1
+v:  3
+aplicado: {'3'} <-
+impar
+w:  3
+n:  3
+v:  2
+n:  2
+v:  4
+n:  1
+v:  1
+par
+w:  1
+n:  1
+v:  4
+impar
+w:  4
+n:  3
+v:  2
+n:  2
+v:  1
+n:  1
+v:  3
+aplicado: {'3'}
+aplicado: {'3'}
+errado:  {'1', '3', '4'}

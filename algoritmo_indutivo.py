@@ -65,71 +65,115 @@ def aplica_ativacao(grafo, ativacao):
     return True
 
 
+def uniao(s1, s2):
+    s = set()
+
+    for i in s1:
+        if i not in s2:
+            s.add(i)
+
+    for i in s2:
+        if i not in s1 and i not in s:
+            s.add(i)
+
+    return s
+
+
+
 def algoritmo_indutivo(grafo):
     vertices = list(grafo.keys())
     n = len(vertices)
-    # print('n: ', n)
+    print('n: ', n)
     if n == 0:
-        return set()
-    v = random.choice(vertices)
-    # print('v: ', v)
+        return list()
+
     if n == 1:
-        return {list(grafo.keys())[0]}
-
-    grafo_v = retira_vertice(grafo, v)
-
-    solucao_v = algoritmo_indutivo(grafo_v)
-
-    if aplica_ativacao(grafo, solucao_v):
-        # print(f"aplicado: {solucao_v}")
-        return solucao_v
+        return [list(grafo.keys())[0]]
+    v = 0
+    solucao_v = []
+    for v in vertices:
+        grafo_v = retira_vertice(grafo, v)
+        v = random.choice(vertices)
+        print('v: ', v)
+        solucao_v = algoritmo_indutivo(grafo_v)
+        print(f"solucao_v: {solucao_v}")
+        if aplica_ativacao(grafo, solucao_v):
+            print("aplicado")
+            return solucao_v
 
     if n % 2 == 0:
-        # print("par")
-        solucao = []
-        for w in grafo_v:
-            # print('w: ', w)
+        print("par")
+        solucao = solucao_v.copy()
+        vertices_v = vertices.copy()
+        vertices_v.remove(v)
+        for w in vertices_v:
+            print('w: ', w)
+            print('solucao_pré_uniao: ', solucao)
             grafo_w = retira_vertice(grafo, w)
             solucao_w = algoritmo_indutivo(grafo_w)
-            solucao = solucao_w ^ solucao_v
+            print('solucao_w: ', solucao_w)
+            solucao = uniao(solucao, solucao_w)
+            print('solucao_pós_uniao: ', solucao)
 
         return solucao
     else:
-        # print("impar")
+        print("impar")
         v = procura_vertice_par(grafo)
         grafo_v = retira_vizinhanca_fechada(grafo, v)
         solucao = {v}
         for w in grafo_v:
-            # print('w: ', w)
-            grafo_w = retira_vertice(grafo_v, w)
+            print('w: ', w)
+            print('solucao_pré_uniao: ', solucao)
+            grafo_w = retira_vertice(grafo, w)
             solucao_w = algoritmo_indutivo(grafo_w)
-            solucao = solucao.union(solucao_w)
+            print('solucao_w: ', solucao_w)
+            solucao = uniao(solucao, solucao_w)
+            print('solucao_pós_uniao: ', solucao)
 
+        solucao = solucao.union({v})
         return solucao
 
 
 #TODO: Algumas dúvidas, como a ordem da solução e de como fazer a união das soluções.
 if __name__ == '__main__':
-    grafo = {
+
+    grafo_simples = {
+        '1': [['2', '3','4'], True],
+        '2': [['1'], True],
+        '3': [['1'], True],
+        '4': [['1'], True]
+    }
+
+    grafo_split = {
         '1': [['2', '3'], True],
         '2': [['1', '3', '4'], True],
-        '3': [['1', '2'], True],
-        '4': [['2'], True]
+        '3': [['1', '2', '5'], True],
+        '4': [['2'], True],
+        '5': [['3'], True]
     }
 
     contagem = 0
-    # grafo1 = {
-    #     '1': [['a', 'b'], True],
-    #     '2': [['a', 'b', 'c'], True],
-    #     '3': [['c'], True],
-    #     'a': [['1', '2'], True],
-    #     'b': [['1', '2'], True],
-    #     'c': [['3', '2'], True],
-    # }
-    n = 1000
+    grafo_bipartido = {
+        '1': [['a', 'b'], True],
+        '2': [['a', 'b', 'c'], True],
+        '3': [['c'], True],
+        'a': [['1', '2'], True],
+        'b': [['1', '2'], True],
+        'c': [['3', '2'], True],
+    }
+
+    grafo_tree = {
+        '1': [['2', '3'], True],
+        '2': [['1', '4'], True],
+        '3': [['1', '5'], True],
+        '4': [['2'], True],
+        '5': [['3'], True]
+    }
+
+    n = 100
     for i in range(n):
-        result = algoritmo_indutivo(grafo)
-        if aplica_ativacao(grafo, result):
+        result = algoritmo_indutivo(grafo_split)
+        if aplica_ativacao(grafo_split, result):
             contagem += 1
             print("correto: ", result)
         else:

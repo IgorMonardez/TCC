@@ -83,7 +83,6 @@ def uniao(s1, s2):
 def algoritmo_indutivo(grafo):
     vertices = list(grafo.keys())
     n = len(vertices)
-    print('n: ', n)
     if n == 0:
         return list()
 
@@ -94,41 +93,28 @@ def algoritmo_indutivo(grafo):
     for v in vertices:
         grafo_v = retira_vertice(grafo, v)
         v = random.choice(vertices)
-        print('v: ', v)
         solucao_v = algoritmo_indutivo(grafo_v)
-        print(f"solucao_v: {solucao_v}")
         if aplica_ativacao(grafo, solucao_v):
-            print("aplicado")
             return solucao_v
 
     if n % 2 == 0:
-        print("par")
         solucao = solucao_v.copy()
         vertices_v = vertices.copy()
         vertices_v.remove(v)
         for w in vertices_v:
-            print('w: ', w)
-            print('solucao_pré_uniao: ', solucao)
             grafo_w = retira_vertice(grafo, w)
             solucao_w = algoritmo_indutivo(grafo_w)
-            print('solucao_w: ', solucao_w)
             solucao = uniao(solucao, solucao_w)
-            print('solucao_pós_uniao: ', solucao)
 
         return solucao
     else:
-        print("impar")
         v = procura_vertice_par(grafo)
         grafo_v = retira_vizinhanca_fechada(grafo, v)
         solucao = {v}
         for w in grafo_v:
-            print('w: ', w)
-            print('solucao_pré_uniao: ', solucao)
             grafo_w = retira_vertice(grafo, w)
             solucao_w = algoritmo_indutivo(grafo_w)
-            print('solucao_w: ', solucao_w)
             solucao = uniao(solucao, solucao_w)
-            print('solucao_pós_uniao: ', solucao)
 
         solucao = solucao.union({v})
         return solucao

@@ -82,6 +82,7 @@ def uniao(s1, s2):
 
 def algoritmo_indutivo(grafo):
     vertices = list(grafo.keys())
+    random.shuffle(vertices)
     n = len(vertices)
     if n == 0:
         return list()
@@ -124,21 +125,22 @@ def algoritmo_indutivo(grafo):
 if __name__ == '__main__':
 
     grafo_simples = {
-        '1': [['2', '3','4'], True],
+        '1': [['2', '3', '4'], True],
         '2': [['1'], True],
         '3': [['1'], True],
         '4': [['1'], True]
     }
 
     grafo_split = {
-        '1': [['2', '3'], True],
+        '1': [['2', '3', '6'], True],
         '2': [['1', '3', '4'], True],
         '3': [['1', '2', '5'], True],
         '4': [['2'], True],
-        '5': [['3'], True]
+        '5': [['3'], True],
+        '6': [['1'], True]
     }
 
-    contagem = 0
+
     grafo_bipartido = {
         '1': [['a', 'b'], True],
         '2': [['a', 'b', 'c'], True],
@@ -153,10 +155,11 @@ if __name__ == '__main__':
         '2': [['1', '4'], True],
         '3': [['1', '5'], True],
         '4': [['2'], True],
-        '5': [['3'], True]
+        '5': [['3'], True],
     }
 
     n = 100
+    contagem = 0
     for i in range(n):
         result = algoritmo_indutivo(grafo_split)
         if aplica_ativacao(grafo_split, result):
@@ -164,4 +167,29 @@ if __name__ == '__main__':
             print("correto: ", result)
         else:
             print("errado: ", result)
-    print(contagem / n)
+
+    print("split: ",contagem / n)
+
+    n = 100
+    contagem = 0
+    for i in range(n):
+        result = algoritmo_indutivo(grafo_bipartido)
+        if aplica_ativacao(grafo_bipartido, result):
+            contagem += 1
+            print("correto: ", result)
+        else:
+            print("errado: ", result)
+
+    print("bipartido: ",contagem / n)
+
+    n = 100
+    contagem = 0
+    for i in range(n):
+        result = algoritmo_indutivo(grafo_tree)
+        if aplica_ativacao(grafo_tree, result):
+            contagem += 1
+            print("correto: ", result)
+        else:
+            print("errado: ", result)
+
+    print("tree: ",contagem / n)

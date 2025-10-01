@@ -35,7 +35,7 @@ def retira_vertice(grafo, vertice_removido):
     return novo_grafo
 
 
-def procura_vertice_par(grafo):
+def procura_vertice_grau_par(grafo):
     for vertice in grafo:
         if len(vizinhanca(grafo, vertice)) % 2 == 0:
             return vertice
@@ -93,7 +93,6 @@ def algoritmo_indutivo(grafo):
     solucao_v = []
     for v in vertices:
         grafo_v = retira_vertice(grafo, v)
-        v = random.choice(vertices)
         solucao_v = algoritmo_indutivo(grafo_v)
         if aplica_ativacao(grafo, solucao_v):
             return solucao_v
@@ -109,7 +108,7 @@ def algoritmo_indutivo(grafo):
 
         return solucao
     else:
-        v = procura_vertice_par(grafo)
+        v = procura_vertice_grau_par(grafo)
         grafo_v = retira_vizinhanca_fechada(grafo, v)
         solucao = {v}
         for w in grafo_v:
@@ -117,7 +116,6 @@ def algoritmo_indutivo(grafo):
             solucao_w = algoritmo_indutivo(grafo_w)
             solucao = uniao(solucao, solucao_w)
 
-        solucao = solucao.union({v})
         return solucao
 
 
@@ -158,7 +156,7 @@ if __name__ == '__main__':
         '5': [['3'], True],
     }
 
-    n = 100000
+    n = 1000
     contagem = 0
     for i in range(n):
         result = algoritmo_indutivo(grafo_split)
@@ -170,7 +168,7 @@ if __name__ == '__main__':
 
     print("split: ",contagem / n)
 
-    n = 100000
+    n = 1000
     contagem = 0
     for i in range(n):
         result = algoritmo_indutivo(grafo_bipartido)
@@ -182,7 +180,7 @@ if __name__ == '__main__':
 
     print("bipartido: ",contagem / n)
 
-    n = 100000
+    n = 1000
     contagem = 0
     for i in range(n):
         result = algoritmo_indutivo(grafo_tree)

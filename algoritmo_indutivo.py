@@ -110,7 +110,7 @@ def algoritmo_indutivo(grafo):
     else:
         v = procura_vertice_grau_par(grafo)
         grafo_v = retira_vizinhanca_fechada(grafo, v)
-        solucao = {v}
+        solucao = [v]
         for w in grafo_v:
             grafo_w = retira_vertice(grafo, w)
             solucao_w = algoritmo_indutivo(grafo_w)

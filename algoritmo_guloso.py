@@ -1,10 +1,10 @@
 import random
+def adiciona_vertice(grafo, vertice, vizinhos):
+    grafo[vertice][0] = vizinhos
 
+    for vizinho in vizinhos:
+        grafo[vertice][0] += [vizinho]
 
-def adiciona_vertice(grafo, v):
-    grafo[v[0]][0] = v[1]
-    for vizinho in v[1]:
-        grafo[v[0]][0] += vizinho
     return grafo
 
 def verifica_ativacao(ativacao, grafo, v):
@@ -12,7 +12,7 @@ def verifica_ativacao(ativacao, grafo, v):
     contagem = 0
     for vertice_ativado in ativacao:
         if vertice_ativado in vizinhos:
-            contagem+=1
+            contagem += 1
 
     if contagem % 2 == 0:
         ativacao += v
@@ -56,11 +56,13 @@ def retira_vertice(grafo, vertice_removido):
     if vertice_removido not in grafo:
         return grafo
 
+    novo_grafo = {}
     for vertice, (vizinhos, estado) in grafo.items():
         if vertice != vertice_removido:
             novos_vizinhos = [v for v in vizinhos if v != vertice_removido]
-            grafo[vertice] = [novos_vizinhos, estado]
-    return grafo
+            novo_grafo[vertice] = [novos_vizinhos, estado]
+
+    return novo_grafo
 
 def algoritmo_guloso(grafo):
     pilha = fase_1(grafo)
@@ -89,11 +91,12 @@ def fase_2(grafo, pilha):
     ativacao = []
     pilha.reverse()
     for vertice, vizinhos in pilha:
-        adiciona_vertice(grafo, (vertice,vizinhos))
+        adiciona_vertice(grafo, vertice, vizinhos)
 
         reversao_vizinhanca(grafo, vertice)
 
-        return verifica_ativacao(ativacao, grafo, vertice)
+        ativacao = verifica_ativacao(ativacao, grafo, vertice)
+    return ativacao
 
 if __name__ == '__main__':
     grafo_simples = {
@@ -131,5 +134,7 @@ if __name__ == '__main__':
         '5': [['3'], True],
     }
 
-    print(algoritmo_guloso(grafo_split))
+    grafo = grafo_simples.copy()
+    print(grafo)
+    print(algoritmo_guloso(grafo))
 

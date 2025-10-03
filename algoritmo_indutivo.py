@@ -1,5 +1,8 @@
 import random
-from collections import Counter
+import networkx as nx
+import matplotlib.pyplot as plt
+from igraph import Graph
+import metodos
 
 
 def vizinhanca(grafo, vertice):
@@ -79,7 +82,6 @@ def uniao(s1, s2):
     return s
 
 
-
 def algoritmo_indutivo(grafo):
     vertices = list(grafo.keys())
     random.shuffle(vertices)
@@ -92,6 +94,8 @@ def algoritmo_indutivo(grafo):
     v = 0
     solucao_v = []
     for v in vertices:
+        # print("n: ", n)
+        # print("v: ", v)
         grafo_v = retira_vertice(grafo, v)
         solucao_v = algoritmo_indutivo(grafo_v)
         if aplica_ativacao(grafo, solucao_v):
@@ -121,7 +125,6 @@ def algoritmo_indutivo(grafo):
 
 #TODO: Algumas dúvidas, como a ordem da solução e de como fazer a união das soluções.
 if __name__ == '__main__':
-
     grafo_simples = {
         '1': [['2', '3', '4'], True],
         '2': [['1'], True],
@@ -138,7 +141,6 @@ if __name__ == '__main__':
         '6': [['1'], True]
     }
 
-
     grafo_bipartido = {
         '1': [['a', 'b'], True],
         '2': [['a', 'b', 'c'], True],
@@ -148,46 +150,17 @@ if __name__ == '__main__':
         'c': [['3', '2'], True],
     }
 
-    grafo_tree = {
-        '1': [['2', '3'], True],
-        '2': [['1', '4'], True],
-        '3': [['1', '5'], True],
-        '4': [['2'], True],
-        '5': [['3'], True],
-    }
 
-    n = 1000
-    contagem = 0
-    for i in range(n):
-        result = algoritmo_indutivo(grafo_split)
-        if aplica_ativacao(grafo_split, result):
-            contagem += 1
-            print("correto: ", result)
-        else:
-            print("errado: ", result)
 
-    print("split: ",contagem / n)
-
-    n = 1000
-    contagem = 0
-    for i in range(n):
-        result = algoritmo_indutivo(grafo_bipartido)
-        if aplica_ativacao(grafo_bipartido, result):
-            contagem += 1
-            print("correto: ", result)
-        else:
-            print("errado: ", result)
-
-    print("bipartido: ",contagem / n)
-
-    n = 1000
-    contagem = 0
-    for i in range(n):
-        result = algoritmo_indutivo(grafo_tree)
-        if aplica_ativacao(grafo_tree, result):
-            contagem += 1
-            print("correto: ", result)
-        else:
-            print("errado: ", result)
-
-    print("tree: ",contagem / n)
+    # n = 10
+    # contagem = 0
+    # for i in range(n):
+    #     result = algoritmo_indutivo(grafo_split)
+    #     if aplica_ativacao(grafo_split, result):
+    #         contagem += 1
+    #         print("correto: ", result)
+    #     else:
+    #         print("errado: ", result)
+    #
+    # print("split: ", contagem / n)
+    # print("\n")

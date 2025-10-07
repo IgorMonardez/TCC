@@ -1,9 +1,10 @@
+import copy
 import random
 def adiciona_vertice(grafo, vertice, vizinhos):
     grafo[vertice][0] = vizinhos
 
     for vizinho in vizinhos:
-        grafo[vertice][0] += [vizinho]
+        grafo[vizinho][0] += [vertice]
 
     return grafo
 
@@ -65,8 +66,9 @@ def retira_vertice(grafo, vertice_removido):
     return novo_grafo
 
 def algoritmo_guloso(grafo):
-    pilha = fase_1(grafo)
-    ativacao = fase_2(grafo,pilha)
+    novo_grafo = copy.deepcopy(grafo)
+    pilha = fase_1(novo_grafo)
+    ativacao = fase_2(novo_grafo,pilha)
     return ativacao
 
 
@@ -134,7 +136,9 @@ if __name__ == '__main__':
         '5': [['3'], True],
     }
 
-    grafo = grafo_simples.copy()
-    print(grafo)
-    print(algoritmo_guloso(grafo))
+
+
+    for i in range(10):
+        print(grafo_simples)
+        print(algoritmo_guloso(grafo_simples))
 

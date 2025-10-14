@@ -1,49 +1,19 @@
 from igraph import Graph
 
-from metodos import gera_grafo_igraph
-from algoritmo_indutivo import algoritmo_indutivo, aplica_ativacao
+from metodos import gera_grafo_igraph, printa_resultados
 
-grafo_bipartido = gera_grafo_igraph(Graph.Random_Bipartite(6,6, m = 21))
+grafo_bipartido = gera_grafo_igraph(Graph.Random_Bipartite(7,7, m = 30))
 
-grafo_tree = gera_grafo_igraph(Graph.Tree(n=30, children=2))
+grafo_tree = gera_grafo_igraph(Graph.Tree(n=15, children=3))
 
+grafo_grid = gera_grafo_igraph(Graph.Lattice(dim=[3,3]))
 
-grafo_grid = gera_grafo_igraph(Graph.Lattice(dim=[4,4]))
-n = 10
-contagem = 0
-print(grafo_bipartido)
-for i in range(n):
-    result = algoritmo_indutivo(grafo_bipartido)
-    if aplica_ativacao(grafo_bipartido, result):
-        contagem += 1
-        print("correto: ", result)
-    else:
-        print("errado: ", result)
+# TODO: Grafo split
+# TODO: Ver por que grafo grid está "demorando" tanto para ser feito
 
-print("resultado: ", contagem / n)
-print("\n")
-contagem = 0
-print(grafo_tree)
-for i in range(n):
-    result = algoritmo_indutivo(grafo_tree)
-    if aplica_ativacao(grafo_tree, result):
-        contagem += 1
-        print("correto: ", result)
-    else:
-        print("errado: ", result)
-
-print("tree: ", contagem / n)
-print("\n")
-
-contagem = 0
-print(grafo_grid)
-for i in range(n):
-    result = algoritmo_indutivo(grafo_grid)
-    if aplica_ativacao(grafo_grid, result):
-        contagem += 1
-        print("correto: ", result)
-    else:
-        print("errado: ", result)
-
-print("tree: ", contagem / n)
-print("\n")
+# print("-----------------bipartido---------------- ")
+# printa_resultados(grafo_bipartido)
+# print("-----------------tree---------------- ")
+# printa_resultados(grafo_tree)
+print("-----------------grid---------------- ")
+printa_resultados(grafo_grid)

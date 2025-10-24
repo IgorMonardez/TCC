@@ -1,9 +1,21 @@
 import random
 
 
+def calcula_maior_grau(grafo):
+    maior_grau = 0
+    vertices = grafo.keys()
+    for vertice in vertices:
+        grau = len(grafo[vertice][0])
+        if grau > maior_grau:
+            maior_grau = grau
+
+    return maior_grau
+
+
 def ativa_grafo(grafo):
     for v in grafo.keys():
         grafo[v][1] = True
+
 
 def verifica_ativacao(ativacao, grafo):
     vertices_ativacao = ativacao.keys()
@@ -55,9 +67,11 @@ def gera_subgrafos(grafo):
 
     return all_subgraphs
 
-def algoritmo_forca_bruta(grafo):
-    subgrafos = gera_subgrafos(grafo)
 
+def algoritmo_forca_bruta(grafo):
+    maior_grau = calcula_maior_grau(grafo)
+    subgrafos = gera_subgrafos(grafo)
+    criterio_parada = len(grafo) / (maior_grau + 1)
     ativacao = []
     tamanho_ativacao = 99999999999999
 
@@ -66,6 +80,9 @@ def algoritmo_forca_bruta(grafo):
             if tamanho_ativacao > len(subgrafo):
                 ativacao = subgrafo
                 tamanho_ativacao = len(subgrafo)
+
+        if tamanho_ativacao == int(criterio_parada):
+            return ativacao, tamanho_ativacao
 
     return ativacao, tamanho_ativacao
 

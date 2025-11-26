@@ -1,8 +1,8 @@
 import copy
 import random
 from collections import deque
-
-from igraph import Graph
+from algoritmo_forca_bruta import algoritmo_forca_bruta
+# from igraph import Graph
 
 
 # from metodos import gera_grafo_igraph
@@ -41,10 +41,7 @@ def verifica_ativacao(ativacao, grafo, v):
 def muda_estado_vizinhanca(grafo, v):
     vizinhos = grafo[v][0]
 
-    if grafo[v][1]:
-        grafo[v][1] = False
-    else:
-        grafo[v][1] = True
+    grafo[v][1] = not grafo[v][1]
 
     for vizinho in vizinhos:
         grafo[vizinho][1] = not grafo[vizinho][1]
@@ -62,25 +59,28 @@ def procura_vertice_ligado(grafo):
 
 
 def reversao_vizinhanca(grafo, v):
-    vizinhos_v = grafo[v][0]
-    for vizinho1 in vizinhos_v:
-        vizinhos_v_1 = vizinhos_v.copy()
-        vizinhos_v_1.remove(vizinho1)
+    if v not in grafo:
+        return
 
-        for vizinho2 in vizinhos_v_1:
+    # Obtém a lista de vizinhos do vértice v (primeiro elemento do array de valor)
+    vizinhos = grafo[v][0].copy()  # Fazemos uma cópia para evitar modificar durante iteração
+    n = len(vizinhos)
 
-            grafo[vizinho1][0] = list(dict.fromkeys(grafo[vizinho1][0]))
-            grafo[vizinho2][0] = list(dict.fromkeys(grafo[vizinho2][0]))
+    for i in range(n):
+        for j in range(i + 1, n):
+            v1 = vizinhos[i]
+            v2 = vizinhos[j]
 
-            if vizinho2 in grafo[vizinho1][0]:
-                grafo[vizinho1][0].remove(vizinho2)
-                grafo[vizinho2][0].remove(vizinho1)
+            # Verifica se v2 é vizinho de v1
+            if v2 in grafo[v1][0]:
+                # Remove a aresta entre v1 e v2 (ambas as direções)
+                grafo[v1][0].remove(v2)
+                grafo[v2][0].remove(v1)
             else:
-                grafo[vizinho1][0].append(vizinho2)
-                grafo[vizinho2][0].append(vizinho1)
+                # Adiciona aresta entre v1 e v2 (ambas as direções)
+                grafo[v1][0].append(v2)
+                grafo[v2][0].append(v1)
     return grafo
-
-
 def retira_vertice(grafo, vertice_removido):
     if vertice_removido not in grafo:
         return grafo
@@ -99,9 +99,15 @@ def algoritmo_guloso(grafo):
     ativacao = fase_2(novo_grafo, pilha)
     return ativacao
 
+def inicializa_grafo(grafo):
+    for vertice,_ in grafo.items():
+        grafo[vertice][1] = True
+
+    return grafo
 
 def fase_1(grafo):
     pilha = deque()
+    grafo = inicializa_grafo(grafo)
     v = procura_vertice_ligado(grafo)
     while v is not None:
         pilha.append([v, grafo[v][0]])
@@ -167,8 +173,8 @@ if __name__ == '__main__':
         '4': [['2'], True],
         '5': [['3'], True],
     }
-    grafo_tree = gera_grafo_igraph(Graph.Tree(n=15, children=3))
-
+    # grafo_tree = gera_grafo_igraph(Graph.Tree(n=15, children=3))
+    _, tam_otimo = algoritmo_forca_bruta(grafo_tree)
     for i in range(10):
         print(grafo_tree)
         print(algoritmo_guloso(grafo_tree))

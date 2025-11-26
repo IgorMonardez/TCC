@@ -4,7 +4,7 @@ from random import random
 from igraph import Graph
 from algoritmo_forca_bruta import algoritmo_forca_bruta
 from algoritmo_guloso import algoritmo_guloso
-from algoritmo_indutivo import algoritmo_indutivo,aplica_ativacao
+import algoritmo_indutivo as ai
 
 def gera_grafo_igraph(grafo_igraf):
     grafo_dict = {}
@@ -38,18 +38,17 @@ def gera_split(tam_clique, tam_is, prob):
             if random() < prob:
                 g.add_edge(vertice_clique, vertice_independente)
 
-    return g, vertices_clique, vertices_independentes
+    return g
 
 
 
 def printa_resultados(grafo, tamanho_otimo):
-    n = 100
+    n = 1000
     grafo = copy.deepcopy(grafo)
     print(grafo)
 
-
-    # print("guloso: ", resultado_guloso(grafo, n, tamanho_otimo))
-    print("indutivo: ", resultado_indutivo(grafo, n, tamanho_otimo))
+    print("guloso: ", resultado_guloso(grafo, n, tamanho_otimo))
+    # print("indutivo: ", resultado_indutivo(grafo, n, tamanho_otimo))
 
 def calcula_optimalidade(tamanho_otimo, ativacao):
     if tamanho_otimo == len(ativacao):
@@ -79,7 +78,7 @@ def resultado_indutivo(grafo, n, tam_otimo):
     contagem_corretude = 0
     contagem_optimidade = 0
     for i in range(n):
-        result = algoritmo_indutivo(grafo)
+        result = ai.algoritmo_indutivo(grafo)
         if aplica_ativacao(grafo, result):
             contagem_corretude += 1
             if calcula_optimalidade(tam_otimo, result):
@@ -93,3 +92,8 @@ def resultado_indutivo(grafo, n, tam_otimo):
     optimidade = contagem_optimidade / n
     corretude = contagem_corretude / n
     return optimidade, corretude
+
+
+n = 10
+for i in range(n):
+    print(gera_grafo_igraph(gera_split(7,7,0.5)))
